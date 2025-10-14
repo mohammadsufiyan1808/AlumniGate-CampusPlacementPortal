@@ -96,7 +96,7 @@ function AppContent() {
           maxSize={800}
           speed={0.05}
           color="#0ea5e9"
-          mouseInfluence={0.8}
+          mouseInfluence={1.2}
           followMouse={true}
         />
       </div>
