@@ -5,6 +5,28 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
+// Check if admin email exists
+router.post("/check-email", async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    if (!email || email.trim().length === 0) {
+      return res.status(400).json({ exists: false, message: "Email is required" });
+    }
+
+    const admin = await Admin.findOne({ email: email.trim() });
+    
+    if (!admin) {
+      return res.status(404).json({ exists: false, message: "Email not found" });
+    }
+
+    return res.status(200).json({ exists: true, message: "Email found" });
+  } catch (err) {
+    console.error("Error checking admin email:", err);
+    return res.status(500).json({ exists: false, message: "Server error" });
+  }
+});
+
 // POST /api/admin/login
 router.post("/login", async (req, res) => {
   try {

@@ -56,21 +56,21 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-transparent dark:bg-dark-900/60 p-6 text-gray-900 dark:text-gray-200 max-w-7xl mx-auto">
+    <div className="min-h-screen flex items-center justify-center bg-transparent p-6 text-gray-900 dark:text-gray-200 max-w-7xl mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
-        className="bg-white/80 dark:bg-dark-800/70 border border-gray-200/30 dark:border-gray-700/30 shadow-2xl rounded-2xl w-full max-w-md p-8 backdrop-blur-sm"
+        className="bg-white/80 dark:bg-dark-800/30 border border-gray-300/40 dark:border-gray-700/30 shadow-lg dark:shadow-none rounded-2xl w-full max-w-md p-8 backdrop-blur-sm"
       >
         {/* Header */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="mb-8 text-center"
+          className="mb-6 text-center"
         >
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 dark:bg-gray-200 rounded-full mb-4 p-3">
+          <div className="inline-flex items-center justify-center w-16 h-16 mb-3 p-2">
             <img
               src="/ag logo bw.png"
               alt="TheAlumniGate Logo"
@@ -105,8 +105,8 @@ export default function ForgotPassword() {
                 className={`w-full pl-11 pr-4 py-3 border ${
                   error
                     ? "border-red-500"
-                    : "border-gray-300 dark:border-white/10"
-                } bg-white/80 dark:bg-white/5 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition disabled:opacity-50 disabled:cursor-not-allowed`}
+                    : "border-gray-300/40 dark:border-gray-700/30"
+                } bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition disabled:opacity-50 disabled:cursor-not-allowed`}
               />
             </div>
             <AnimatePresence>

@@ -7,6 +7,28 @@ import crypto from "crypto";
 
 const router = express.Router();
 
+// Check if roll number exists
+router.post("/check-rollno", async (req, res) => {
+  try {
+    const { rollno } = req.body;
+    
+    if (!rollno || rollno.trim().length === 0) {
+      return res.status(400).json({ exists: false, message: "Roll number is required" });
+    }
+
+    const student = await Students.findOne({ rollno: rollno.trim() });
+    
+    if (!student) {
+      return res.status(404).json({ exists: false, message: "Roll number not found" });
+    }
+
+    return res.status(200).json({ exists: true, message: "Roll number found" });
+  } catch (err) {
+    console.error("Error checking roll number:", err);
+    return res.status(500).json({ exists: false, message: "Server error" });
+  }
+});
+
 //api for login
 router.post("/login", async (req, res) => {
   try {

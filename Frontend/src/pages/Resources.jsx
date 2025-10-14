@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
+import { useToast } from "../hooks/useToast";
+import ToastContainer from "../components/ToastContainer";
 import {
   FaCode,
   FaLaptopCode,
@@ -20,6 +22,22 @@ import {
 
 const Resources = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const location = useLocation();
+  const toast = useToast();
+
+  // Show welcome message whenever resources page is visited
+  useEffect(() => {
+    // Small delay to ensure the page is fully loaded
+    setTimeout(() => {
+      toast.success("You still have time to learn a lot!", {
+        autoClose: 3000, // Popup stays for 3 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }, 300);
+  }, [location.pathname]); // Run when pathname changes
   
   const resourceCategories = [
     {
@@ -188,6 +206,7 @@ const Resources = () => {
 
   return (
     <div className="min-h-screen bg-transparent py-8 px-4 pt-24">
+      <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
