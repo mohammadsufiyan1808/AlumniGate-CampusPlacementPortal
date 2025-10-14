@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import LightRays from "./components/LightRays";
 import MovingCircles from "./components/MovingCircles";
+import { useTheme } from "./context/ThemeContext";
 import "./App.css";
 
 // Student Components
@@ -56,12 +57,14 @@ import AdminAuthProvider from "./context/AdminAuthProvider"; // ✅ Added
 
 function AppContent() {
   const location = useLocation();
+  const { isDark } = useTheme();
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
     <div className="app-shell">
       <div className="app-bg">
         <LightRays
+          key={`dark-rays-${isDark}`}
           raysOrigin="top-center"
           raysColor="#0ea5e9"
           raysSpeed={1.2}
@@ -74,6 +77,7 @@ function AppContent() {
           className="custom-rays dark-rays"
         />
         <LightRays
+          key={`light-rays-${isDark}`}
           raysOrigin="top-center"
           raysColor="#1e40af"
           raysSpeed={1.2}
@@ -86,11 +90,14 @@ function AppContent() {
           className="custom-rays light-rays"
         />
         <MovingCircles
+          key={`moving-circles-${isDark}`}
           circleCount={2}
           minSize={400}
           maxSize={800}
           speed={0.05}
           color="#0ea5e9"
+          mouseInfluence={0.8}
+          followMouse={true}
         />
       </div>
       

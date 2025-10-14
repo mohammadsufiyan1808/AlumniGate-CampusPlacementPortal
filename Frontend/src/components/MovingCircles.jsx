@@ -5,11 +5,14 @@ const MovingCircles = ({
   minSize = 40,
   maxSize = 120,
   speed = 0.5,
-  color = '#0ea5e9'
+  color = '#0ea5e9',
+  mouseInfluence = 0.3,
+  followMouse = true
 }) => {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const circlesRef = useRef([]);
+  const mouseRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -23,6 +26,24 @@ const MovingCircles = ({
 
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
+
+    // Mouse tracking
+    const handleMouseMove = (e) => {
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
+      // Debug: log mouse position occasionally
+      if (Math.random() < 0.01) {
+        console.log('Mouse position:', mouseRef.current);
+      }
+    };
+
+    if (followMouse) {
+      window.addEventListener('mousemove', handleMouseMove);
+    }
 
     // Initialize circles
     const initializeCircles = () => {
@@ -47,9 +68,31 @@ const MovingCircles = ({
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       circlesRef.current.forEach((circle) => {
-        // Update position
-        circle.x += circle.dx;
-        circle.y += circle.dy;
+        // Calculate mouse influence
+        let mouseForceX = 0;
+        let mouseForceY = 0;
+        
+        if (followMouse && mouseInfluence > 0) {
+          const dx = circle.x - mouseRef.current.x; // Reversed direction for repulsion
+          const dy = circle.y - mouseRef.current.y; // Reversed direction for repulsion
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const maxDistance = 400; // Influence radius
+          
+          if (distance < maxDistance && distance > 0) {
+            const force = (1 - distance / maxDistance) * mouseInfluence * 2; // Increased force multiplier
+            mouseForceX = (dx / distance) * force;
+            mouseForceY = (dy / distance) * force;
+            
+            // Debug: log when mouse influence is applied
+            if (Math.random() < 0.005) {
+              console.log('Mouse repulsion applied:', { distance, force, mouseForceX, mouseForceY });
+            }
+          }
+        }
+
+        // Update position with mouse influence
+        circle.x += circle.dx + mouseForceX;
+        circle.y += circle.dy + mouseForceY;
 
         // Wrap around edges - let circles go off screen and come back from the other side
         if (circle.x < -circle.size / 2) {
@@ -92,11 +135,14 @@ const MovingCircles = ({
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      if (followMouse) {
+        window.removeEventListener('mousemove', handleMouseMove);
+      }
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [circleCount, minSize, maxSize, speed, color]);
+  }, [circleCount, minSize, maxSize, speed, color, mouseInfluence, followMouse]);
 
   return (
     <canvas

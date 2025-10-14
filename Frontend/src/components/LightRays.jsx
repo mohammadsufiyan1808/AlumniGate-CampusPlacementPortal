@@ -80,15 +80,28 @@ const LightRays = ({
   useEffect(() => {
     if (!isVisible || !containerRef.current) return;
 
+    // Force cleanup and re-initialization when becoming visible
     if (cleanupFunctionRef.current) {
       cleanupFunctionRef.current();
       cleanupFunctionRef.current = null;
     }
 
+    // Clear any existing WebGL context
+    if (rendererRef.current) {
+      rendererRef.current = null;
+    }
+    if (uniformsRef.current) {
+      uniformsRef.current = null;
+    }
+    if (meshRef.current) {
+      meshRef.current = null;
+    }
+
     const initializeWebGL = async () => {
       if (!containerRef.current) return;
 
-      await new Promise(resolve => setTimeout(resolve, 10));
+      // Give more time for DOM to be ready and ensure clean state
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       if (!containerRef.current) return;
 
