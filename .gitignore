@@ -1,0 +1,25 @@
+# Node modules (frontend and backend)
+Frontend/node_modules/
+Backend/node_modules/
+
+# Environment variables
+# *.env
+# Frontend/.env
+Backend/.env
+
+# Backend init folder
+Backend/init/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS/system files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/
