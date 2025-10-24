@@ -24,7 +24,7 @@ export default function EvaluateResults() {
         const sortedCompanies = res.data.companies.sort((a, b) => 
           a.company_name.toLowerCase().localeCompare(b.company_name.toLowerCase())
         );
-        console.log("Sorted companies:", sortedCompanies.map(c => c.company_name));
+        //console.log("Sorted companies:", sortedCompanies.map(c => c.company_name));
         setCompanies(sortedCompanies);
       }
     } catch (err) {

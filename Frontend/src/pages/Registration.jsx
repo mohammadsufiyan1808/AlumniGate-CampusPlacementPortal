@@ -133,8 +133,8 @@ export default function Registration() {
         toast.success("Registration completed successfully!");
 
         setTimeout(() => {
-          navigate("/");
-        }, 1000);
+          navigate("/companies-for-you");
+        }, 100);
       }
     } catch (err) {
       console.error(err);

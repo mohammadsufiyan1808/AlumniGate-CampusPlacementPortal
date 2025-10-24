@@ -2,23 +2,25 @@ import { useState, useEffect } from "react";
 import { AdminAuthContext } from "./AdminAuthContext";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 export default function AdminAuthProvider({ children }) {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
+  let logoutTimer = null; // ⏱ to store auto logout timer
 
-  // ✅ Check if token is expired
+  // ✅ Check if token expired
   const isTokenExpired = (token) => {
     try {
       const decoded = jwtDecode(token);
-      return decoded.exp * 1000 < Date.now(); // Convert to milliseconds
+      return decoded.exp * 1000 < Date.now(); // Compare milliseconds
     } catch (err) {
-      return true; // If decode fails, treat as expired
+      return true;
     }
   };
 
-  // ✅ Decode JWT
+  // ✅ Decode token
   const decodeToken = (token) => {
     try {
       return jwtDecode(token);
@@ -41,19 +43,37 @@ export default function AdminAuthProvider({ children }) {
     }
   };
 
-  // ✅ On load — check admin token with cleanup
+  // ✅ Setup auto logout timer
+  const setupAutoLogout = (expTime) => {
+    const timeRemaining = expTime * 1000 - Date.now();
+    if (timeRemaining > 0) {
+      logoutTimer = setTimeout(() => {
+        toast.info("Admin session expired. Please login again.");
+        logoutAdmin();
+      }, timeRemaining);
+    }
+  };
+
+  // ✅ Logout
+  const logoutAdmin = () => {
+    clearTimeout(logoutTimer);
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("admin");
+    setIsAdminLoggedIn(false);
+    setAdmin(null);
+  };
+
+  // ✅ On load
   useEffect(() => {
-    let isMounted = true; // ✅ Prevent memory leak
+    let isMounted = true;
 
     const initAuth = async () => {
       const token = localStorage.getItem("adminToken");
-      
       if (token && !isTokenExpired(token)) {
         const decoded = decodeToken(token);
-        
         if (decoded && isMounted) {
+          setupAutoLogout(decoded.exp); // ⏱ auto logout after expiry
           const fullAdmin = await fetchAdminData(token);
-          
           if (fullAdmin && isMounted) {
             setIsAdminLoggedIn(true);
             setAdmin(fullAdmin);
@@ -61,21 +81,16 @@ export default function AdminAuthProvider({ children }) {
           }
         }
       } else {
-        // Token expired or doesn't exist - clear storage
-        localStorage.removeItem("adminToken");
-        localStorage.removeItem("admin");
+        logoutAdmin();
       }
-      
-      if (isMounted) {
-        setLoading(false);
-      }
+
+      if (isMounted) setLoading(false);
     };
 
     initAuth();
-
-    // ✅ Cleanup function
     return () => {
       isMounted = false;
+      clearTimeout(logoutTimer);
     };
   }, []);
 
@@ -83,24 +98,15 @@ export default function AdminAuthProvider({ children }) {
   const loginAdmin = async (token) => {
     localStorage.setItem("adminToken", token);
     const decoded = decodeToken(token);
-    
     if (decoded) {
+      setupAutoLogout(decoded.exp);
       const fullAdmin = await fetchAdminData(token);
-      
       if (fullAdmin) {
         setIsAdminLoggedIn(true);
         setAdmin(fullAdmin);
         localStorage.setItem("admin", JSON.stringify(fullAdmin));
       }
     }
-  };
-
-  // ✅ Logout
-  const logoutAdmin = () => {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("admin");
-    setIsAdminLoggedIn(false);
-    setAdmin(null);
   };
 
   return (

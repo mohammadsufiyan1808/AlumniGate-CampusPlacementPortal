@@ -28,6 +28,7 @@ import Profile from "./pages/Profile";
 import UpdatePreferences from "./pages/update-preferences";
 import ForgotPassword from "./pages/ForgotPassword"; // ✅ Added
 import ResetPassword from "./pages/ResetPassword"; // ✅ Added
+import NotFound from "./pages/NotFound.jsx";
 
 // Resource Pages
 import Resources from "./pages/Resources";
@@ -107,6 +108,7 @@ function AppContent() {
 
         <Routes>
           {/* --- Student/Public Routes --- */}
+          <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Home />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/companies/:code" element={<CompanyDetails />} />

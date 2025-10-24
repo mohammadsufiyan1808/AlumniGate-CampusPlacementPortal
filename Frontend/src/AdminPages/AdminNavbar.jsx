@@ -24,7 +24,7 @@ export default function AdminNavbar() {
       initial={{ y: -70, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="sticky top-2 z-50 mx-4 bg-white/90 dark:bg-dark-900/30 backdrop-blur-md border border-gray-300/50 dark:border-gray-700/30 shadow-xl flex justify-between items-center px-6 py-3 rounded-full"
+    className="sticky top-2 z-50 mx-4 bg-white/90 dark:bg-dark-900/30 backdrop-blur-md border border-gray-300/50 dark:border-gray-700/30 shadow-xl flex justify-between items-center px-6 py-3 rounded-full"
     >
       {/* Logo */}
       <motion.div

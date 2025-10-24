@@ -126,14 +126,6 @@ function getDaysLeft(dateStr) {
 export default function Home() {
   const { isLoggedIn, student } = useContext(AuthContext);
 
-  // if (isLoggedIn) {
-  //   return (
-  //     <div className="flex items-center justify-center min-h-screen">
-  //       <h2 className="text-xl font-semibold">Please log in to continue.</h2>
-  //     </div>
-  //   );
-  // }
-
   return (
     <div className="bg-transparent min-h-screen text-gray-900 dark:text-gray-200">
 

@@ -21,7 +21,7 @@ const connectDB = async () => {
   }
 };
 
-/* const initDBCompanies = async () => {
+const initDBCompanies = async () => {
   try {
     await Company.deleteMany({});
     await Company.insertMany(companies);
@@ -48,7 +48,7 @@ const initDBStudents = async () => {
   } catch (err) {
     console.error("Error inserting students:", err);
   }
-}; */
+}; 
 
 const initAdmin = async () => {
   try {
@@ -64,14 +64,14 @@ const initAdmin = async () => {
 
     console.log("🛡 Admin account created successfully");
   } catch (err) {
-    console.error("❌ Error creating admin:", err);
+    console.error(" Error creating admin:", err);
   }
 };
 
 const seed = async () => {
   await connectDB();
-  //await initDBCompanies();
-  //await initDBStudents();
+  await initDBCompanies();
+  await initDBStudents();
   await initAdmin();
   console.log("Database seeding completed!");
   process.exit();

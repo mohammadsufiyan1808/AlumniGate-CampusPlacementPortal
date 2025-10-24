@@ -2,23 +2,35 @@ import { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import { authService } from "../services/authService";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 export default function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(true);
+  let logoutTimer = null; // ⏱ to track automatic logout
 
-  // Helper to decode JWT token
+  // ✅ Decode JWT token
   const decodeToken = (token) => {
     try {
-      return jwtDecode(token); // will return { id, email, isRegisteredBefore }
+      return jwtDecode(token); // e.g. { id, rollno, exp }
     } catch (err) {
       console.error("Invalid token:", err);
       return null;
     }
   };
 
-  // Fetch full student data from backend
+  // ✅ Check if token expired
+  const isTokenExpired = (token) => {
+    try {
+      const decoded = jwtDecode(token);
+      return decoded.exp * 1000 < Date.now(); // Convert seconds → ms
+    } catch (err) {
+      return true;
+    }
+  };
+
+  // ✅ Fetch full student data from backend
   const fetchStudentData = async (token) => {
     try {
       const response = await authService.getCurrentUser();
@@ -29,53 +41,80 @@ export default function AuthProvider({ children }) {
     }
   };
 
+  // ✅ Setup auto logout timer
+  const setupAutoLogout = (expTime) => {
+    const timeRemaining = expTime * 1000 - Date.now();
+    if (timeRemaining > 0) {
+      logoutTimer = setTimeout(() => {
+        toast.info("Session expired. Please log in again.");
+        logout();
+      }, timeRemaining);
+    }
+  };
+
+  // ✅ Logout
+  const logout = () => {
+    clearTimeout(logoutTimer);
+    authService.logout();
+    setIsLoggedIn(false);
+    setStudent(null);
+  };
+
+  // ✅ On page load
   useEffect(() => {
+    let isMounted = true;
+
     const initAuth = async () => {
       const token = localStorage.getItem("token");
       const storedStudent = localStorage.getItem("student");
-      if (token) {
+
+      if (token && !isTokenExpired(token)) {
         const decoded = decodeToken(token);
-        if (decoded) {
+        if (decoded && isMounted) {
+          setupAutoLogout(decoded.exp);
           const fullStudent = await fetchStudentData(token);
-          if (fullStudent) {
+          if (fullStudent && isMounted) {
             setIsLoggedIn(true);
             setStudent(fullStudent);
             localStorage.setItem("student", JSON.stringify(fullStudent));
-          }
-          else if (storedStudent) {
-            // fallback if backend fetch fails
+          } else if (storedStudent) {
             setIsLoggedIn(true);
             setStudent(JSON.parse(storedStudent));
           }
         }
+      } else {
+        logout();
       }
-      setLoading(false);
+
+      if (isMounted) setLoading(false);
     };
+
     initAuth();
+    return () => {
+      isMounted = false;
+      clearTimeout(logoutTimer);
+    };
   }, []);
 
+  // ✅ Login
   const login = async (token, student) => {
     authService.storeUser(token, student);
+    const decoded = decodeToken(token);
+    if (decoded) setupAutoLogout(decoded.exp);
     setIsLoggedIn(true);
     setStudent(student);
-  };
-
-  const logout = () => {
-    authService.logout();
-    setIsLoggedIn(false);
-    setStudent(null);
   };
 
   return (
     <AuthContext.Provider
       value={{
         isLoggedIn,
-        setIsLoggedIn,   
+        setIsLoggedIn,
         student,
-        setStudent,     
+        setStudent,
         login,
         logout,
-        loading
+        loading,
       }}
     >
       {children}
