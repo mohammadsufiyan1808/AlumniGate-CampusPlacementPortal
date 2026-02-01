@@ -55,8 +55,9 @@ export const forgotPassword = async (req, res) => {
     student.resetPasswordExpire = resetExpire;
     await student.save();
 
-    // reset URL (frontend link)
-    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+    // reset URL (frontend link) - use env variable for production
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
     await sendEmail(
       student.email,

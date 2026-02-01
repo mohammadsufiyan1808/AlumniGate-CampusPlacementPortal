@@ -36,7 +36,10 @@ export default function AdminAuthProvider({ children }) {
       const res = await apiClient.get("/admin/me");
       return res.data.admin;
     } catch (err) {
-      console.error("Error fetching admin data:", err);
+      // 401 is expected when not logged in - don't log it
+      if (err.response?.status !== 401) {
+        console.error("Error fetching admin data:", err);
+      }
       return null;
     }
   };

@@ -5,12 +5,14 @@ Backend/node_modules/
 # Environment variables
 # *.env
 # Frontend/.env
+.env
+.env.*
 Backend/.env
+Frontend/.env
 
 # Backend init folder
 Backend/init/
 
-Frontend/.env
 
 # Logs
 *.log
