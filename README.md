@@ -1,150 +1,184 @@
-TheAlumniGateFinal/
-├── Backend/                          # Node.js Backend
-│   ├── app.js                        # Main server file
-│   ├── cloudConfig.js                # Cloudinary configuration
-│   ├── package.json                  # Backend dependencies
-│   ├── package-lock.json             # Dependency lock file
-│   ├── init/                         # Database initialization
-│   │   ├── companies.js              # Company data initialization
-│   │   ├── index.js                  # Main initialization file
-│   │   └── students.js               # Student data initialization
-│   ├── middlewares/                  # Express middlewares
-│   │   ├── multer.js                 # File upload middleware
-│   │   ├── VerifyAdminToken.js       # Admin token verification
-│   │   └── verifyToken.js            # JWT token verification
-│   ├── src/                          # Source code
-│   │   ├── AdminRoutes/              # Admin-specific routes
-│   │   │   ├── adminDetails.js       # Admin details management
-│   │   │   ├── companyRoute.js       # Company CRUD operations
-│   │   │   ├── evaluateResultsRoute.js # Application evaluation
-│   │   │   ├── login.js              # Admin authentication
-│   │   │   └── studentRoute.js       # Student management
-│   │   ├── models/                   # Database models
-│   │   │   ├── admin.js              # Admin model
-│   │   │   ├── application.js        # Application model
-│   │   │   ├── company.js            # Company model
-│   │   │   └── student.js            # Student model
-│   │   ├── routes/                   # API routes
-│   │   │   ├── admin.js              # Admin routes
-│   │   │   ├── applications.js       # Application routes
-│   │   │   ├── auth.js               # Authentication routes
-│   │   │   ├── companies.js          # Company routes
-│   │   │   ├── eligibility.js        # Eligibility check routes
-│   │   │   └── profile.js            # Profile management routes
-│   │   └── utils/                    # Utility functions
-│   │       └── sendEmail.js          # Email service utility
-│   └── uploads/                      # File uploads directory
-│       └── 1759345983861.pdf         # Example uploaded file
-├── Frontend/                         # React Frontend
-│   ├── index.html                    # HTML entry point
-│   ├── package.json                  # Frontend dependencies
-│   ├── package-lock.json             # Dependency lock file
-│   ├── vite.config.js                # Vite configuration
-│   ├── tailwind.config.js            # Tailwind CSS configuration
-│   ├── postcss.config.js             # PostCSS configuration
-│   ├── eslint.config.js              # ESLint configuration
-│   ├── public/                       # Static assets
-│   │   ├── ag logo bw.png            # Application logo (black & white)
-│   │   ├── massmutual.png            # MassMutual logo
-│   │   ├── vce-logo.svg              # VCE logo (SVG)
-│   │   └── vce.png                   # VCE logo (PNG)
-│   └── src/                          # Source code
-│       ├── App.jsx                   # Main App component
-│       ├── App.css                   # Global styles
-│       ├── index.css                 # Entry CSS
-│       ├── main.jsx                  # React entry point
-│       ├── AdminComponents/          # Admin-specific components
-│       │   ├── AddCompanyForm.jsx    # Company addition form
-│       │   ├── EvaluateResults.jsx   # Application evaluation component
-│       │   └── StudentDetails.jsx    # Student details component
-│       ├── AdminPages/               # Admin page components
-│       │   ├── AdminHome.jsx         # Admin dashboard home
-│       │   ├── AdminLogin.jsx        # Admin login page
-│       │   └── AdminNavbar.jsx       # Admin navigation bar
-│       ├── AdminRoutes/              # Admin route components
-│       │   ├── AdminPrivateRoute.jsx # Protected admin routes
-│       │   └── AdminPublicRoute.jsx  # Public admin routes
-│       ├── components/               # Reusable components
-│       │   ├── DarkModeToggle.jsx    # Theme toggle component
-│       │   ├── EligibleRoute.jsx     # Eligibility check wrapper
-│       │   ├── LightRays.jsx         # Background light rays effect
-│       │   ├── MovingCircles.jsx     # Animated background circles
-│       │   ├── Navbar.jsx            # Main navigation bar
-│       │   ├── PostRegistrationRoute.jsx # Post-registration route wrapper
-│       │   ├── PrivateRoute.jsx      # Protected route wrapper
-│       │   ├── PublicRoute.jsx       # Public route wrapper
-│       │   ├── RegistrationRoute.jsx # Registration route wrapper
-│       │   ├── Toast.jsx             # Toast notification component
-│       │   ├── ToastContainer.jsx    # Toast container component
-│       │   └── TrueFocus.jsx         # Focus management component
-│       ├── constants/                # Application constants
-│       │   ├── api.js                # API endpoints
-│       │   ├── routes.js             # Route definitions
-│       │   └── validation.js         # Validation rules
-│       ├── context/                  # React Context providers
-│       │   ├── AdminAuthContext.js   # Admin authentication context
-│       │   ├── AdminAuthProvider.jsx # Admin auth provider
-│       │   ├── AuthContext.js        # User authentication context
-│       │   ├── AuthProvider.jsx      # Auth provider
-│       │   └── ThemeContext.jsx      # Theme management context
-│       ├── hooks/                    # Custom React hooks
-│       │   ├── useApi.js             # API call hook
-│       │   ├── useAuth.js            # Authentication hook
-│       │   ├── useLocalStorage.js    # Local storage hook
-│       │   ├── useTheme.js           # Theme management hook
-│       │   └── useToast.js           # Toast notification hook
-│       ├── pages/                    # Page components
-│       │   ├── AppliedCompanies.jsx  # Applied companies page
-│       │   ├── ApplyPage.jsx         # Company application page
-│       │   ├── Auth.jsx              # Login page
-│       │   ├── Companies.jsx         # Companies listing page
-│       │   ├── CompaniesForYou.jsx   # Personalized companies page
-│       │   ├── CompanyDetails.jsx    # Company details page
-│       │   ├── Confirmation.jsx      # Application confirmation page
-│       │   ├── ForgotPassword.jsx    # Password reset request page
-│       │   ├── Home.jsx              # Landing page
-│       │   ├── Profile.jsx           # User profile page
-│       │   ├── Registration.jsx      # Student registration page
-│       │   ├── ResetPassword.jsx     # Password reset page
-│       │   ├── Resources.jsx         # Resources hub page
-│       │   ├── update-preferences.jsx # Preferences update page
-│       │   └── resources/            # Resource pages
-│       │       ├── CIVILprep.jsx     # Civil engineering prep
-│       │       ├── Commuincation.jsx # Communication skills
-│       │       ├── CSEprep.jsx       # Computer science prep
-│       │       ├── DSAprep.jsx       # Data structures prep
-│       │       ├── DSAprep.module.css # DSA prep styles
-│       │       ├── ECEprep.jsx       # Electronics prep
-│       │       ├── EEEprep.jsx       # Electrical prep
-│       │       ├── HRandTR.jsx       # HR and technical rounds
-│       │       ├── HRandTR.module.css # HR styles
-│       │       ├── MECHprep.jsx      # Mechanical prep
-│       │       ├── Placementprep.jsx # General placement prep
-│       │       ├── Placementprep.module.css # Placement prep styles
-│       │       ├── Productcomp.jsx   # Product companies info
-│       │       ├── Productcomp.module.css # Product comp styles
-│       │       ├── Pseudocode.jsx    # Pseudocode guide
-│       │       ├── Pseudocode.module.css # Pseudocode styles
-│       │       ├── Servicecomp.jsx   # Service companies info
-│       │       ├── Servicecomp.module.css # Service comp styles
-│       │       ├── Technicalconcepcard.jsx # Technical concepts card
-│       │       ├── Technicalconcepcard.module.css # Technical concepts styles
-│       │       └── TechnicalConcepts.jsx # Technical concepts page
-│       ├── services/                 # API service functions
-│       │   ├── api.js                # Base API configuration
-│       │   ├── applicationService.js # Application API calls
-│       │   ├── authService.js        # Authentication API calls
-│       │   ├── companyService.js     # Company API calls
-│       │   └── profileService.js     # Profile API calls
-│       ├── types/                    # TypeScript type definitions
-│       │   └── index.js              # Type definitions
-│       ├── utils/                    # Utility functions
-│       │   ├── helpers.js            # Helper functions
-│       │   ├── storage.js            # Storage utilities
-│       │   └── validation.js         # Validation utilities
-│       └── assets/                   # Static assets
-│           └── react.svg             # React logo
-├── CHAT_TRANSCRIPT.txt               # Chat transcript file
-├── CHAT_TRANSCRIPT_FULL.txt          # Full chat transcript file
-└── README.md                         # Project documentation
+# Alumni Gate
 
+A comprehensive campus placement management portal that streamlines the recruitment process between students, administrators, and recruiting companies.
+
+## Project Overview
+
+Alumni Gate addresses the challenges faced by educational institutions in managing campus placements. It provides a centralized platform where students can discover job opportunities, track their applications, and manage their profiles, while administrators can efficiently handle company registrations, student eligibility, and placement results.
+
+### Target Users
+
+- **Students**: Browse companies, check eligibility, apply for positions, and track application status
+- **Administrators**: Manage student data, add companies, evaluate applications, and oversee the placement process
+- **Placement Cells**: Monitor overall placement statistics and manage recruitment workflows
+
+## Key Features
+
+### Student Portal
+- JWT-based secure authentication with password reset functionality
+- Profile management with resume upload (Cloudinary integration)
+- Company browsing with eligibility-based filtering
+- Job application submission with unique application tracking
+- Real-time application status monitoring
+- Preference management for job notifications
+
+### Admin Dashboard
+- Separate admin authentication with role-based access
+- Student profile management and verification
+- Company CRUD operations with eligibility criteria configuration
+- Application evaluation and result management
+- Bulk status updates for placement results
+
+### Security
+- Protected routes with JWT verification
+- Password hashing using bcrypt
+- Role-based authorization (Student vs Admin)
+- Token expiration and refresh handling
+
+## Tech Stack
+
+### Frontend
+- **Framework**: React 18 with Vite
+- **Styling**: Tailwind CSS
+- **State Management**: React Context API
+- **HTTP Client**: Axios with interceptors
+- **Routing**: React Router v6
+- **Animations**: Framer Motion
+
+### Backend
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Architecture**: MVC with Controllers
+- **Authentication**: JWT with bcrypt
+
+### Database
+- **Database**: MongoDB
+- **ODM**: Mongoose
+
+### Cloud Services
+- **File Storage**: Cloudinary (resume uploads)
+- **Email**: Nodemailer (password reset)
+
+## System Architecture
+
+```
+┌─────────────────┐     HTTP/REST      ┌─────────────────┐
+│                 │ ←───────────────→  │                 │
+│  React Frontend │                    │  Express API    │
+│  (Vite + Axios) │                    │  (Controllers)  │
+│                 │                    │                 │
+└─────────────────┘                    └────────┬────────┘
+                                                │
+                                                ▼
+                                       ┌─────────────────┐
+                                       │    MongoDB      │
+                                       │   (Mongoose)    │
+                                       └─────────────────┘
+```
+
+### Authentication Flow
+1. User submits credentials
+2. Backend validates and issues JWT token (7-day expiry)
+3. Token stored in localStorage
+4. Subsequent requests include token in Authorization header
+5. Protected routes verify token via middleware
+
+### Role Separation
+- `/api/*` - Student routes (require student JWT)
+- `/api/admin/*` - Admin routes (require admin JWT with role verification)
+
+## Folder Structure
+
+```
+TheAlumniGate/
+├── Backend/
+│   ├── app.js                    # Express server entry point
+│   ├── src/
+│   │   ├── controllers/          # Route handlers (MVC)
+│   │   │   ├── admin/            # Admin-specific controllers
+│   │   │   └── *.controller.js   # Student controllers
+│   │   ├── models/               # Mongoose schemas
+│   │   ├── routes/               # API route definitions
+│   │   │   └── admin/            # Admin routes
+│   │   ├── middlewares/          # Auth & error handling
+│   │   └── utils/                # Helper functions
+│   └── middlewares/              # Token verification
+│
+└── Frontend/
+    └── src/
+        ├── components/           # Reusable UI components
+        ├── pages/                # Page components
+        ├── AdminPages/           # Admin dashboard pages
+        ├── AdminComponents/      # Admin-specific components
+        ├── context/              # React Context providers
+        ├── hooks/                # Custom React hooks
+        └── services/             # API client configuration
+```
+
+## Environment Setup
+
+### Prerequisites
+- Node.js v18 or higher
+- MongoDB instance (local or Atlas)
+- Cloudinary account (for file uploads)
+
+### Environment Variables
+
+**Backend (.env)**
+```
+PORT=8080
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+EMAIL_USER=your_email_for_notifications
+EMAIL_PASS=your_email_app_password
+```
+
+**Frontend (.env)**
+```
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+### Running Locally
+
+**Backend**
+```bash
+cd Backend
+npm install
+nodemon app.js
+```
+
+**Frontend**
+```bash
+cd Frontend
+npm install
+npm run dev
+```
+
+The frontend runs on `http://localhost:5173` and connects to the backend at `http://localhost:8080`.
+
+## Security Practices
+
+| Practice | Implementation |
+|----------|----------------|
+| Password Storage | bcrypt hashing with salt rounds |
+| Authentication | JWT tokens with 7-day expiration |
+| Authorization | Role-based middleware verification |
+| API Protection | Token validation on all protected routes |
+| Error Handling | Centralized error middleware with sanitized responses |
+| Input Validation | Request body validation before processing |
+
+## Future Enhancements
+
+- **Recruiter Portal**: Dedicated interface for company HR representatives
+- **Notification System**: Email and in-app notifications for application updates
+- **Analytics Dashboard**: Placement statistics and trend analysis
+- **Interview Scheduling**: Integrated calendar for interview management
+- **Mobile Application**: React Native companion app
+- **Bulk Operations**: CSV import/export for student and company data
+
+## License
+
+This project is developed for educational and institutional use.
