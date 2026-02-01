@@ -10,6 +10,8 @@ Backend/.env
 # Backend init folder
 Backend/init/
 
+Frontend/.env
+
 # Logs
 *.log
 npm-debug.log*
