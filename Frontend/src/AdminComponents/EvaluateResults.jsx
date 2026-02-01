@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 
 export default function EvaluateResults() {
   const [companies, setCompanies] = useState([]);
@@ -18,10 +18,10 @@ export default function EvaluateResults() {
 
   const fetchCompanies = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/admin/companies");
+      const res = await apiClient.get("/admin/companies");
       if (res.data.success) {
         // Sort companies alphabetically by company name (case-insensitive)
-        const sortedCompanies = res.data.companies.sort((a, b) => 
+        const sortedCompanies = res.data.companies.sort((a, b) =>
           a.company_name.toLowerCase().localeCompare(b.company_name.toLowerCase())
         );
         //console.log("Sorted companies:", sortedCompanies.map(c => c.company_name));
@@ -44,9 +44,7 @@ export default function EvaluateResults() {
   const fetchApplications = async (companyId) => {
     setLoading(true);
     try {
-      const res = await axios.get(
-        `http://localhost:8080/api/admin/applications/${companyId}`
-      );
+      const res = await apiClient.get(`/admin/applications/${companyId}`);
       if (res.data.success) {
         setApplications(res.data.applications);
       }
@@ -61,8 +59,8 @@ export default function EvaluateResults() {
   // Handle status change
   const handleStatusChange = async (applicationId, newStatus) => {
     try {
-      const res = await axios.put(
-        `http://localhost:8080/api/admin/application/${applicationId}/status`,
+      const res = await apiClient.put(
+        `/admin/application/${applicationId}/status`,
         { status: newStatus }
       );
 
@@ -187,15 +185,14 @@ export default function EvaluateResults() {
                       </p>
                     </div>
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        app.status === "Selected"
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${app.status === "Selected"
                           ? "bg-green-100 text-green-700"
                           : app.status === "Shortlisted"
-                          ? "bg-blue-100 text-blue-700"
-                          : app.status === "Rejected"
-                          ? "bg-red-100 text-red-700"
-                          : "bg-yellow-100 text-yellow-700"
-                      }`}
+                            ? "bg-blue-100 text-blue-700"
+                            : app.status === "Rejected"
+                              ? "bg-red-100 text-red-700"
+                              : "bg-yellow-100 text-yellow-700"
+                        }`}
                     >
                       {app.status}
                     </span>

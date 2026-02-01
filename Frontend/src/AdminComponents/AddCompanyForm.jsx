@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { X } from "lucide-react";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 
 export default function AddCompanyForm({ onAddCompany }) {
   const [form, setForm] = useState({
@@ -114,11 +114,11 @@ export default function AddCompanyForm({ onAddCompany }) {
     };
 
     try {
-      const response = await axios.post("http://localhost:8080/api/admin/company", companyData);
-      
+      const response = await apiClient.post("/admin/company", companyData);
+
       if (response.data.success) {
-        alert("✅ Company added successfully!");
-        
+        alert("Company added successfully!");
+
         // Reset form
         setForm({
           companyName: "",
@@ -262,11 +262,10 @@ export default function AddCompanyForm({ onAddCompany }) {
               type="button"
               key={b}
               onClick={() => handleBranchToggle(b)}
-              className={`px-4 py-2 rounded-full border transition ${
-                form.branches.includes(b)
+              className={`px-4 py-2 rounded-full border transition ${form.branches.includes(b)
                   ? "bg-blue-600 text-white border-blue-600"
                   : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-blue-100 dark:hover:bg-blue-900"
-              }`}
+                }`}
             >
               {b}
             </button>

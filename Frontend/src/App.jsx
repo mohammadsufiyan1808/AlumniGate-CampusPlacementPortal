@@ -101,7 +101,7 @@ function AppContent() {
           followMouse={true}
         />
       </div>
-      
+
       <div className="app-content">
         {/* Conditionally render navbars */}
         {isAdminRoute ? <AdminNavbar /> : <Navbar />}

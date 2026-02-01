@@ -185,19 +185,16 @@ export default function Navbar() {
             className="flex flex-col justify-between w-6 h-5 cursor-pointer"
           >
             <span
-              className={`block h-0.5 w-full bg-gray-700 dark:bg-gray-300 rounded transform transition duration-300 ${
-                isMenuOpen ? "rotate-45 translate-y-2" : ""
-              }`}
+              className={`block h-0.5 w-full bg-gray-700 dark:bg-gray-300 rounded transform transition duration-300 ${isMenuOpen ? "rotate-45 translate-y-2" : ""
+                }`}
             ></span>
             <span
-              className={`block h-0.5 w-full bg-gray-700 dark:bg-gray-300 rounded transition duration-300 ${
-                isMenuOpen ? "opacity-0" : "opacity-100"
-              }`}
+              className={`block h-0.5 w-full bg-gray-700 dark:bg-gray-300 rounded transition duration-300 ${isMenuOpen ? "opacity-0" : "opacity-100"
+                }`}
             ></span>
             <span
-              className={`block h-0.5 w-full bg-gray-700 dark:bg-gray-300 rounded transform transition duration-300 ${
-                isMenuOpen ? "-rotate-45 -translate-y-2" : ""
-              }`}
+              className={`block h-0.5 w-full bg-gray-700 dark:bg-gray-300 rounded transform transition duration-300 ${isMenuOpen ? "-rotate-45 -translate-y-2" : ""
+                }`}
             ></span>
           </motion.div>
         </button>

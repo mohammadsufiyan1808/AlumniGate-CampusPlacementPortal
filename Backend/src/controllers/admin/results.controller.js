@@ -1,11 +1,12 @@
-import express from "express";
-import Company from "../models/company.js";
-import Applications from "../models/application.js";
+import Company from "../../models/company.js";
+import Applications from "../../models/application.js";
 
-const router = express.Router();
-
-// Get all companies
-router.get("/companies", async (req, res) => {
+/**
+ * @desc    Get all companies for admin
+ * @route   GET /api/admin/companies
+ * @access  Private (admin only)
+ */
+export const getAllCompanies = async (req, res) => {
   try {
     const companies = await Company.find()
       .select("company_name job_role application_code deadline")
@@ -16,17 +17,21 @@ router.get("/companies", async (req, res) => {
     console.error("Error fetching companies:", err);
     res.status(500).json({ success: false, message: "Server error" });
   }
-});
+};
 
-// Get all applications for a specific company with student details populated
-router.get("/applications/:companyId", async (req, res) => {
+/**
+ * @desc    Get all applications for a specific company
+ * @route   GET /api/admin/applications/:companyId
+ * @access  Private (admin only)
+ */
+export const getApplicationsByCompany = async (req, res) => {
   try {
     const { companyId } = req.params;
 
     // Fetch applications and populate student details
     const applications = await Applications.find({ companyId })
-      .populate("studentId", "name rollno email branch cgpa") // Populate student fields
-      .populate("companyId", "company_name job_role") // Populate company fields
+      .populate("studentId", "name rollno email branch cgpa")
+      .populate("companyId", "company_name job_role")
       .sort({ appliedAt: -1 });
 
     res.status(200).json({ success: true, applications });
@@ -34,12 +39,14 @@ router.get("/applications/:companyId", async (req, res) => {
     console.error("Error fetching applications:", err);
     res.status(500).json({ success: false, message: "Server error" });
   }
-});
+};
 
-//update application stauts route
-
-// Update application status
-router.put("/application/:applicationId/status", async (req, res) => {
+/**
+ * @desc    Update application status
+ * @route   PUT /api/admin/application/:applicationId/status
+ * @access  Private (admin only)
+ */
+export const updateApplicationStatus = async (req, res) => {
   try {
     const { applicationId } = req.params;
     const { status } = req.body;
@@ -82,7 +89,4 @@ router.put("/application/:applicationId/status", async (req, res) => {
       error: err.message
     });
   }
-});
-
-
-export default router;
+};

@@ -1,4 +1,4 @@
-import api from "./api.js";
+import api from "./apiClient.js";
 
 export const authService = {
   // Login user

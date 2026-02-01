@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 import { AuthContext } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "../hooks/useToast";
@@ -28,11 +28,11 @@ export default function Auth() {
 
     if (!form.rollno.trim()) {
       newErrors.rollno = "Roll number is required";
-    } 
+    }
 
     if (!form.password) {
       newErrors.password = "Password is required";
-    } 
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -49,7 +49,7 @@ export default function Auth() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:8080/api/auth/login", {
+      const res = await apiClient.post("/auth/login", {
         rollno: form.rollno,
         password: form.password,
       });
@@ -114,11 +114,10 @@ export default function Auth() {
                 value={form.rollno}
                 onChange={handleChange}
                 disabled={loading}
-                className={`w-full pl-11 pr-4 py-3 border ${
-                  errors.rollno
+                className={`w-full pl-11 pr-4 py-3 border ${errors.rollno
                     ? "border-red-500"
                     : "border-gray-300 dark:border-white/10"
-                } bg-white/80 dark:bg-white/5 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition disabled:opacity-50 disabled:cursor-not-allowed`}
+                  } bg-white/80 dark:bg-white/5 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition disabled:opacity-50 disabled:cursor-not-allowed`}
               />
             </div>
             <AnimatePresence>
@@ -148,11 +147,10 @@ export default function Auth() {
                 value={form.password}
                 onChange={handleChange}
                 disabled={loading}
-                className={`w-full pl-11 pr-4 py-3 border ${
-                  errors.password
+                className={`w-full pl-11 pr-4 py-3 border ${errors.password
                     ? "border-red-500"
                     : "border-gray-300 dark:border-white/10"
-                } bg-white/80 dark:bg-white/5 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition disabled:opacity-50 disabled:cursor-not-allowed`}
+                  } bg-white/80 dark:bg-white/5 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition disabled:opacity-50 disabled:cursor-not-allowed`}
               />
             </div>
             <AnimatePresence>
@@ -174,11 +172,10 @@ export default function Auth() {
             whileTap={{ scale: loading ? 1 : 0.98 }}
             type="submit"
             disabled={loading}
-            className={`relative bg-gradient-to-r from-primary-600 to-primary-500 dark:from-primary-500 dark:to-primary-400 text-white py-3 rounded-lg font-semibold shadow-lg transition-all flex items-center justify-center gap-2 ${
-              loading
+            className={`relative bg-gradient-to-r from-primary-600 to-primary-500 dark:from-primary-500 dark:to-primary-400 text-white py-3 rounded-lg font-semibold shadow-lg transition-all flex items-center justify-center gap-2 ${loading
                 ? "opacity-70 cursor-not-allowed"
                 : "hover:shadow-primary-500/50 dark:hover:shadow-primary-400/50"
-            }`}
+              }`}
           >
             {loading ? (
               <>

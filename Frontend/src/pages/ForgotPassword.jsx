@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -14,7 +14,7 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Clear previous error
     setError("");
 
@@ -32,11 +32,8 @@ export default function ForgotPassword() {
     setIsLoading(true);
 
     try {
-      const res = await axios.post(
-        "http://localhost:8080/api/auth/forgot-password",
-        { email }
-      );
-      
+      const res = await apiClient.post("/auth/forgot-password", { email });
+
       setIsLoading(false);
 
       // ✅ SweetAlert success modal
@@ -81,7 +78,7 @@ export default function ForgotPassword() {
             Reset Password
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-sm">
-            
+
           </p>
         </motion.div>
 
@@ -102,11 +99,10 @@ export default function ForgotPassword() {
                   setError(""); // Clear error on input
                 }}
                 disabled={isLoading}
-                className={`w-full pl-11 pr-4 py-3 border ${
-                  error
+                className={`w-full pl-11 pr-4 py-3 border ${error
                     ? "border-red-500"
                     : "border-gray-300/40 dark:border-gray-700/30"
-                } bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition disabled:opacity-50 disabled:cursor-not-allowed`}
+                  } bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition disabled:opacity-50 disabled:cursor-not-allowed`}
               />
             </div>
             <AnimatePresence>
@@ -129,11 +125,10 @@ export default function ForgotPassword() {
             whileTap={{ scale: isLoading ? 1 : 0.98 }}
             type="submit"
             disabled={isLoading}
-            className={`relative bg-gradient-to-r from-primary-600 to-primary-500 dark:from-primary-500 dark:to-primary-400 text-white py-3 rounded-lg font-semibold shadow-lg transition-all flex items-center justify-center gap-2 ${
-              isLoading
+            className={`relative bg-gradient-to-r from-primary-600 to-primary-500 dark:from-primary-500 dark:to-primary-400 text-white py-3 rounded-lg font-semibold shadow-lg transition-all flex items-center justify-center gap-2 ${isLoading
                 ? "opacity-70 cursor-not-allowed"
                 : "hover:shadow-primary-500/50 dark:hover:shadow-primary-400/50"
-            }`}
+              }`}
           >
             {isLoading ? (
               <>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Lock, CheckCircle } from "lucide-react";
 import Swal from "sweetalert2";
@@ -19,7 +19,7 @@ export default function ResetPassword() {
     } else {
       setConfirmPassword(value);
     }
-    
+
     // Clear error for this field when user starts typing
     if (errors[field]) {
       setErrors({ ...errors, [field]: "" });
@@ -55,11 +55,10 @@ export default function ResetPassword() {
     setIsLoading(true);
 
     try {
-      const res = await axios.post(
-        `http://localhost:8080/api/auth/reset-password/${token}`,
-        { password }
-      );
-      
+      const res = await apiClient.post(`/auth/reset-password/${token}`, {
+        password,
+      });
+
       setIsLoading(false);
 
       // Success modal
@@ -74,7 +73,7 @@ export default function ResetPassword() {
       });
     } catch (err) {
       setIsLoading(false);
-      
+
       // Error modal
       Swal.fire({
         title: "Reset Failed",
@@ -130,11 +129,10 @@ export default function ResetPassword() {
                 value={password}
                 onChange={(e) => handleChange("password", e.target.value)}
                 disabled={isLoading}
-                className={`w-full pl-11 pr-4 py-3 border ${
-                  errors.password
+                className={`w-full pl-11 pr-4 py-3 border ${errors.password
                     ? "border-red-500"
                     : "border-gray-300/40 dark:border-gray-700/30"
-                } bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition disabled:opacity-50 disabled:cursor-not-allowed`}
+                  } bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition disabled:opacity-50 disabled:cursor-not-allowed`}
               />
             </div>
             <AnimatePresence>
@@ -163,11 +161,10 @@ export default function ResetPassword() {
                 value={confirmPassword}
                 onChange={(e) => handleChange("confirmPassword", e.target.value)}
                 disabled={isLoading}
-                className={`w-full pl-11 pr-4 py-3 border ${
-                  errors.confirmPassword
+                className={`w-full pl-11 pr-4 py-3 border ${errors.confirmPassword
                     ? "border-red-500"
                     : "border-gray-300/40 dark:border-gray-700/30"
-                } bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition disabled:opacity-50 disabled:cursor-not-allowed`}
+                  } bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition disabled:opacity-50 disabled:cursor-not-allowed`}
               />
             </div>
             <AnimatePresence>
@@ -190,11 +187,10 @@ export default function ResetPassword() {
             whileTap={{ scale: isLoading ? 1 : 0.98 }}
             type="submit"
             disabled={isLoading}
-            className={`relative bg-gradient-to-r from-primary-600 to-primary-500 dark:from-primary-500 dark:to-primary-400 text-white py-3 rounded-lg font-semibold shadow-lg transition-all flex items-center justify-center gap-2 ${
-              isLoading
+            className={`relative bg-gradient-to-r from-primary-600 to-primary-500 dark:from-primary-500 dark:to-primary-400 text-white py-3 rounded-lg font-semibold shadow-lg transition-all flex items-center justify-center gap-2 ${isLoading
                 ? "opacity-70 cursor-not-allowed"
                 : "hover:shadow-primary-500/50 dark:hover:shadow-primary-400/50"
-            }`}
+              }`}
           >
             {isLoading ? (
               <>

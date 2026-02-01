@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "../hooks/useToast";
 import ToastContainer from "../components/ToastContainer";
 import { Loader2, Upload, CheckCircle } from "lucide-react";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 
 export default function UpdatePreferences() {
   const navigate = useNavigate();
@@ -34,8 +34,8 @@ export default function UpdatePreferences() {
 
   useEffect(() => {
     // Fetch all companies
-    axios
-      .get("http://localhost:8080/api/companies")
+    apiClient
+      .get("/companies")
       .then((res) => setCompanies(res.data))
       .catch((err) => console.error("Error fetching companies:", err));
 
@@ -136,16 +136,11 @@ export default function UpdatePreferences() {
     }
 
     try {
-      const response = await axios.put(
-        "http://localhost:8080/api/update-preferences",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await apiClient.put("/update-preferences", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.data.success) {
         const { student: updatedStudent } = response.data;
@@ -214,11 +209,10 @@ export default function UpdatePreferences() {
                   key={idx}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`flex items-center space-x-2 border px-3 py-2 rounded-lg cursor-pointer transition ${
-                    form.sector_of_interest.includes(role)
+                  className={`flex items-center space-x-2 border px-3 py-2 rounded-lg cursor-pointer transition ${form.sector_of_interest.includes(role)
                       ? "border-primary-500 bg-primary-500/20 text-primary-700 dark:text-primary-300"
                       : "border-gray-300/40 dark:border-gray-700/30 hover:bg-gray-100/50 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300"
-                  }`}
+                    }`}
                 >
                   <input
                     type="checkbox"
@@ -257,11 +251,10 @@ export default function UpdatePreferences() {
               Upload Resume (PDF only, max 5MB)
             </label>
             <div
-              className={`relative border-2 border-dashed ${
-                errors.resume
+              className={`relative border-2 border-dashed ${errors.resume
                   ? "border-red-500"
                   : "border-gray-300/40 dark:border-gray-700/30"
-              } rounded-lg p-6 bg-gray-100/50 dark:bg-white/5 hover:bg-gray-200/50 dark:hover:bg-white/10 transition`}
+                } rounded-lg p-6 bg-gray-100/50 dark:bg-white/5 hover:bg-gray-200/50 dark:hover:bg-white/10 transition`}
             >
               <input
                 type="file"
@@ -282,8 +275,8 @@ export default function UpdatePreferences() {
                   {uploading
                     ? "Uploading..."
                     : form.resume?.file_name
-                    ? form.resume.file_name
-                    : "Click or drag to upload"}
+                      ? form.resume.file_name
+                      : "Click or drag to upload"}
                 </p>
               </div>
             </div>
@@ -313,11 +306,10 @@ export default function UpdatePreferences() {
             whileTap={{ scale: submitting ? 1 : 0.98 }}
             type="submit"
             disabled={submitting}
-            className={`w-full px-6 py-3 rounded-lg text-white font-semibold transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-primary-600 to-primary-500 shadow-lg ${
-              submitting
+            className={`w-full px-6 py-3 rounded-lg text-white font-semibold transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-primary-600 to-primary-500 shadow-lg ${submitting
                 ? "opacity-70 cursor-not-allowed"
                 : "hover:shadow-primary-500/50"
-            }`}
+              }`}
           >
             {submitting ? (
               <>

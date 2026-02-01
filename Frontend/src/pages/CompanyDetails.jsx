@@ -9,7 +9,7 @@ import {
   BookOpen,
   CheckCircle,
 } from "lucide-react";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 
 export default function CompanyDetails() {
   const { code } = useParams();
@@ -17,8 +17,8 @@ export default function CompanyDetails() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/companies")
+    apiClient
+      .get("/companies")
       .then((res) => {
         const found = res.data.find((c) => c.application_code === code);
         if (found) {
@@ -51,9 +51,9 @@ export default function CompanyDetails() {
 
   const logoUrl = company.company_overview?.website
     ? `https://logo.clearbit.com/${company.company_overview.website.replace(
-        /^https?:\/\//,
-        ""
-      )}`
+      /^https?:\/\//,
+      ""
+    )}`
     : null;
 
   const initials = company.company_name
@@ -124,11 +124,10 @@ export default function CompanyDetails() {
               <img
                 src={
                   company.company_overview?.website
-                    ? `https://www.google.com/s2/favicons?domain=${
-                        company.company_overview.website
-                          .replace(/^https?:\/\//, "")
-                          .split("/")[0]
-                      }&sz=128`
+                    ? `https://www.google.com/s2/favicons?domain=${company.company_overview.website
+                      .replace(/^https?:\/\//, "")
+                      .split("/")[0]
+                    }&sz=128`
                     : ""
                 }
                 alt={company.company_name}

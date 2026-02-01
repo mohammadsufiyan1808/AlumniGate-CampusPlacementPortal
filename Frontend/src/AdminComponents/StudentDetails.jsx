@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Pencil, Check, X } from "lucide-react";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 
 export default function StudentDetails() {
   const [rollInput, setRollInput] = useState("");
@@ -14,9 +14,7 @@ export default function StudentDetails() {
     if (!rollInput.trim()) return alert("Please enter a Roll Number");
 
     try {
-      const res = await axios.get(
-        `http://localhost:8080/api/admin/student/${rollInput}`
-      );
+      const res = await apiClient.get(`/admin/student/${rollInput}`);
       if (res.data.success) {
         setFoundStudent(res.data.student);
         setEditingField(null);
@@ -42,10 +40,9 @@ export default function StudentDetails() {
 
   const handleSaveEdit = async (field) => {
     try {
-      await axios.put(
-        `http://localhost:8080/api/admin/student/${foundStudent.rollno}`,
-        { [field]: tempValue }
-      );
+      await apiClient.put(`/admin/student/${foundStudent.rollno}`, {
+        [field]: tempValue,
+      });
 
       setFoundStudent({ ...foundStudent, [field]: tempValue });
       setEditingField(null);

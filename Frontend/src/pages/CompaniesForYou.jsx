@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 
 export default function CompaniesForYou() {
   const [student, setStudent] = useState(null);
@@ -19,8 +19,8 @@ export default function CompaniesForYou() {
     setStudent(stored);
 
     // ✅ Fetch companies-for-you from backend API
-    axios
-      .get(`http://localhost:8080/api/companies-for-you/${stored._id}`)
+    apiClient
+      .get(`/companies-for-you/${stored._id}`)
       .then((res) => {
         setCompanies(res.data);
       })
@@ -143,8 +143,8 @@ export default function CompaniesForYou() {
           {filteredCompanies.map((company, idx) => {
             const domain = company.company_overview?.website
               ? company.company_overview.website
-                  .replace(/^https?:\/\//, "")
-                  .split("/")[0]
+                .replace(/^https?:\/\//, "")
+                .split("/")[0]
               : null;
             const logoUrl = domain
               ? `https://logo.clearbit.com/${domain}`

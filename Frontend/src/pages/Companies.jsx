@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Loader2, AlertCircle, Search } from "lucide-react";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 
 export default function CompaniesTimeline() {
   const [companies, setCompanies] = useState([]);
@@ -10,8 +10,8 @@ export default function CompaniesTimeline() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/companies")
+    apiClient
+      .get("/companies")
       .then((res) => {
         setCompanies(res.data);
         setLoading(false);
@@ -102,103 +102,103 @@ export default function CompaniesTimeline() {
           </p>
         </motion.div>
       ) : (
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-        {filteredCompanies.map((company, idx) => {
-          const domain = company.company_overview?.website
-            ? company.company_overview.website
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+          {filteredCompanies.map((company, idx) => {
+            const domain = company.company_overview?.website
+              ? company.company_overview.website
                 .replace(/^https?:\/\//, "")
                 .split("/")[0]
-            : null;
-          const logoUrl = domain ? `https://logo.clearbit.com/${domain}` : null;
+              : null;
+            const logoUrl = domain ? `https://logo.clearbit.com/${domain}` : null;
 
-          const initials = company.company_name
-            .split(" ")
-            .map((w) => w[0])
-            .join("");
+            const initials = company.company_name
+              .split(" ")
+              .map((w) => w[0])
+              .join("");
 
-          return (
-            <motion.div
-              key={company.application_code}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1, duration: 0.6 }}
-              whileHover={{ scale: 1.02 }}
-              className="bg-white/80 dark:bg-dark-800/30 border border-gray-300/40 dark:border-gray-700/30 rounded-xl shadow-lg dark:shadow-none overflow-hidden transition-all duration-300 group"
-            >
-              {/* Header with Logo */}
-              <div className="flex items-center gap-4 p-6 border-b border-gray-300/40 dark:border-gray-700/30">
-                <motion.div
-                  className="w-12 h-12 rounded-full shadow-lg bg-white dark:bg-white flex items-center justify-center overflow-hidden p-2 border-2 border-primary-300 dark:border-primary-200"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {logoUrl ? (
-                    <img
-                      src={logoUrl}
-                      alt={company.company_name}
-                      className="w-full h-full object-contain"
-                      onError={(e) => {
-                        if (domain && !e.target.dataset.faviconTried) {
-                          e.target.dataset.faviconTried = "1";
-                          e.target.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+            return (
+              <motion.div
+                key={company.application_code}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1, duration: 0.6 }}
+                whileHover={{ scale: 1.02 }}
+                className="bg-white/80 dark:bg-dark-800/30 border border-gray-300/40 dark:border-gray-700/30 rounded-xl shadow-lg dark:shadow-none overflow-hidden transition-all duration-300 group"
+              >
+                {/* Header with Logo */}
+                <div className="flex items-center gap-4 p-6 border-b border-gray-300/40 dark:border-gray-700/30">
+                  <motion.div
+                    className="w-12 h-12 rounded-full shadow-lg bg-white dark:bg-white flex items-center justify-center overflow-hidden p-2 border-2 border-primary-300 dark:border-primary-200"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {logoUrl ? (
+                      <img
+                        src={logoUrl}
+                        alt={company.company_name}
+                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                          if (domain && !e.target.dataset.faviconTried) {
+                            e.target.dataset.faviconTried = "1";
+                            e.target.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+                          }
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src={
+                          domain
+                            ? `https://www.google.com/s2/favicons?domain=${domain}&sz=128`
+                            : ""
                         }
-                      }}
-                    />
-                  ) : (
-                    <img
-                      src={
-                        domain
-                          ? `https://www.google.com/s2/favicons?domain=${domain}&sz=128`
-                          : ""
-                      }
-                      alt={company.company_name}
-                      className="w-full h-full object-contain"
-                    />
-                  )}
-                </motion.div>
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                    {company.company_name}
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm">
-                    {company.job_role}
-                  </p>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    Salary
-                  </span>
-                  <span className="text-primary-600 dark:text-primary-400 font-semibold">
-                    {company.salary.min} - {company.salary.max}{" "}
-                    {company.salary.unit}
-                  </span>
+                        alt={company.company_name}
+                        className="w-full h-full object-contain"
+                      />
+                    )}
+                  </motion.div>
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                      {company.company_name}
+                    </h2>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      {company.job_role}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    Deadline
-                  </span>
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
-                    {new Date(company.deadline).toLocaleDateString()}
-                  </span>
-                </div>
+                {/* Content */}
+                <div className="p-6 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      Salary
+                    </span>
+                    <span className="text-primary-600 dark:text-primary-400 font-semibold">
+                      {company.salary.min} - {company.salary.max}{" "}
+                      {company.salary.unit}
+                    </span>
+                  </div>
 
-                <motion.a
-                  whileHover={{ scale: 1.05 }}
-                  href={`/companies/${company.application_code}`}
-                  className="block w-full mt-4 px-4 py-2 bg-primary-600 dark:bg-primary-500 text-white rounded-lg shadow-sm hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors text-center font-medium"
-                >
-                  View Details
-                </motion.a>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      Deadline
+                    </span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      {new Date(company.deadline).toLocaleDateString()}
+                    </span>
+                  </div>
+
+                  <motion.a
+                    whileHover={{ scale: 1.05 }}
+                    href={`/companies/${company.application_code}`}
+                    className="block w-full mt-4 px-4 py-2 bg-primary-600 dark:bg-primary-500 text-white rounded-lg shadow-sm hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors text-center font-medium"
+                  >
+                    View Details
+                  </motion.a>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       )}
     </div>
   );

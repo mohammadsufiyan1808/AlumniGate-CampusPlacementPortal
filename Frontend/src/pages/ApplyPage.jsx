@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useToast } from "../hooks/useToast";
 import ToastContainer from "../components/ToastContainer";
 import { Loader2, CheckCircle2 } from "lucide-react";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 
 export default function ApplyPage() {
   const { code } = useParams();
@@ -19,8 +19,8 @@ export default function ApplyPage() {
 
   useEffect(() => {
     // Fetch selected company
-    axios
-      .get("http://localhost:8080/api/companies")
+    apiClient
+      .get("/companies")
       .then((res) => {
         const found = res.data.find((c) => c.application_code === code);
         setCompany(found);
@@ -43,19 +43,9 @@ export default function ApplyPage() {
     setSubmitting(true);
 
     try {
-      const token = localStorage.getItem("token");
-
-      const res = await axios.post(
-        "http://localhost:8080/api/apply",
-        {
-          companyId: company._id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await apiClient.post("/apply", {
+        companyId: company._id,
+      });
 
       if (res.data.success) {
         const applied =
@@ -222,11 +212,10 @@ export default function ApplyPage() {
               whileTap={{ scale: submitting ? 1 : 0.95 }}
               onClick={handleConfirm}
               disabled={submitting}
-              className={`bg-primary-600 dark:bg-primary-500 text-white px-6 py-3 rounded-lg transition flex items-center gap-2 shadow-sm ${
-                submitting
+              className={`bg-primary-600 dark:bg-primary-500 text-white px-6 py-3 rounded-lg transition flex items-center gap-2 shadow-sm ${submitting
                   ? "opacity-70 cursor-not-allowed"
                   : "hover:bg-primary-700 dark:hover:bg-primary-600"
-              }`}
+                }`}
             >
               {submitting ? (
                 <>

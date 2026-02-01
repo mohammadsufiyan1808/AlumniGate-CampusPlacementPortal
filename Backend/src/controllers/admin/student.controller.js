@@ -1,9 +1,11 @@
-import express from "express";
-import Students from "../models/student.js";
+import Students from "../../models/student.js";
 
-const router = express.Router();
-
-router.get("/:rollno", async (req, res) => {
+/**
+ * @desc    Get student by roll number
+ * @route   GET /api/admin/student/:rollno
+ * @access  Private (admin only)
+ */
+export const getStudentByRollno = async (req, res) => {
   try {
     const { rollno } = req.params;
 
@@ -19,9 +21,14 @@ router.get("/:rollno", async (req, res) => {
     console.error("Error fetching student by rollno:", err);
     res.status(500).json({ success: false, message: "Server error" });
   }
-});
+};
 
-router.put("/:rollno", async (req, res) => {
+/**
+ * @desc    Update student by roll number
+ * @route   PUT /api/admin/student/:rollno
+ * @access  Private (admin only)
+ */
+export const updateStudent = async (req, res) => {
   try {
     const { rollno } = req.params;
     const updates = req.body;
@@ -40,6 +47,4 @@ router.put("/:rollno", async (req, res) => {
     console.error("Error updating student:", err);
     res.status(500).json({ success: false, message: "Server error" });
   }
-});
-
-export default router;
+};

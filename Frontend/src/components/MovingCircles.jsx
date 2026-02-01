@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const MovingCircles = ({ 
+const MovingCircles = ({
   circleCount = 8,
   minSize = 40,
   maxSize = 120,
@@ -35,10 +35,6 @@ const MovingCircles = ({
         x: e.clientX - rect.left,
         y: e.clientY - rect.top
       };
-      // Debug: log mouse position occasionally
-      if (Math.random() < 0.01) {
-        console.log('Mouse position:', mouseRef.current);
-      }
     };
 
     if (followMouse) {
@@ -71,22 +67,17 @@ const MovingCircles = ({
         // Calculate mouse influence
         let mouseForceX = 0;
         let mouseForceY = 0;
-        
+
         if (followMouse && mouseInfluence > 0) {
           const dx = circle.x - mouseRef.current.x; // Reversed direction for repulsion
           const dy = circle.y - mouseRef.current.y; // Reversed direction for repulsion
           const distance = Math.sqrt(dx * dx + dy * dy);
           const maxDistance = 400; // Influence radius
-          
+
           if (distance < maxDistance && distance > 0) {
             const force = (1 - distance / maxDistance) * mouseInfluence * 2; // Increased force multiplier
             mouseForceX = (dx / distance) * force;
             mouseForceY = (dy / distance) * force;
-            
-            // Debug: log when mouse influence is applied
-            if (Math.random() < 0.005) {
-              console.log('Mouse repulsion applied:', { distance, force, mouseForceX, mouseForceY });
-            }
           }
         }
 
@@ -100,7 +91,7 @@ const MovingCircles = ({
         } else if (circle.x > canvas.width + circle.size / 2) {
           circle.x = -circle.size / 2;
         }
-        
+
         if (circle.y < -circle.size / 2) {
           circle.y = canvas.height + circle.size / 2;
         } else if (circle.y > canvas.height + circle.size / 2) {
@@ -120,7 +111,7 @@ const MovingCircles = ({
 
         // Draw circle (only if it's at least partially visible)
         if (circle.x > -circle.size / 2 && circle.x < canvas.width + circle.size / 2 &&
-            circle.y > -circle.size / 2 && circle.y < canvas.height + circle.size / 2) {
+          circle.y > -circle.size / 2 && circle.y < canvas.height + circle.size / 2) {
           ctx.beginPath();
           ctx.arc(circle.x, circle.y, circle.size / 2, 0, Math.PI * 2);
           ctx.fillStyle = `${color}${Math.floor(circle.opacity * 255).toString(16).padStart(2, '0')}`;

@@ -2,30 +2,35 @@
 .app-shell {
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
 }
 
 .app-bg {
   position: fixed;
   inset: 0;
-  z-index: 0; /* rays behind */
-  background: radial-gradient(1200px 600px at 50% 0%, rgba(255,255,255,0.06), rgba(0,0,0,0) 60%), #000000;
+  z-index: 0;
+  overflow: hidden;
+  /* Moved here from app-shell */
+  /* rays behind */
+  background: radial-gradient(1200px 600px at 50% 0%, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0) 60%), #000000;
 }
 
 .app-content {
   position: relative;
-  z-index: 10; /* content above rays */
+  z-index: 10;
+  /* content above rays */
   color: #e6e7eb;
 }
 
 /* Dark theme base */
-html, body, #root {
+html,
+body,
+#root {
   background-color: #000000;
 }
 
 /* Light mode background */
 html:not(.dark) .app-bg {
-  background: radial-gradient(1200px 600px at 50% 0%, rgba(14,165,233,0.08), rgba(255,255,255,0) 60%), #f8fafc;
+  background: radial-gradient(1200px 600px at 50% 0%, rgba(14, 165, 233, 0.08), rgba(255, 255, 255, 0) 60%), #f8fafc;
 }
 
 /* Light mode text color */
@@ -34,7 +39,9 @@ html:not(.dark) .app-content {
 }
 
 /* Light theme base */
-html:not(.dark), html:not(.dark) body, html:not(.dark) #root {
+html:not(.dark),
+html:not(.dark) body,
+html:not(.dark) #root {
   background-color: #f8fafc;
 }
 
@@ -81,9 +88,11 @@ html.dark .light-circles {
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -92,6 +101,7 @@ html.dark .light-circles {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -110,4 +120,3 @@ html.dark .light-circles {
 .read-the-docs {
   color: #888;
 }
-

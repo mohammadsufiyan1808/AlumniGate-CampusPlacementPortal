@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 import { useNavigate } from "react-router-dom";
 
 export default function AppliedCompanies() {
@@ -17,14 +17,7 @@ export default function AppliedCompanies() {
           return;
         }
 
-        const res = await axios.get(
-          "http://localhost:8080/api/applied-companies",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await apiClient.get("/applied-companies");
 
         if (res.data.success) {
           setApplications(res.data.applications);

@@ -1,7 +1,7 @@
 import { Navigate, useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 
 export default function EligibleRoute({ children }) {
   const { code } = useParams();
@@ -16,10 +16,7 @@ export default function EligibleRoute({ children }) {
 
     const checkEligibility = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const res = await axios.get(`http://localhost:8080/api/eligibility/${code}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await apiClient.get(`/eligibility/${code}`);
 
         if (res.data.success) {
           setIsEligible(true);

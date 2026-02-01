@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AdminAuthContext } from "./AdminAuthContext";
-import axios from "axios";
+import apiClient from "../services/apiClient";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 
@@ -33,9 +33,7 @@ export default function AdminAuthProvider({ children }) {
   // ✅ Fetch admin data
   const fetchAdminData = async (token) => {
     try {
-      const res = await axios.get("http://localhost:8080/api/admin/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await apiClient.get("/admin/me");
       return res.data.admin;
     } catch (err) {
       console.error("Error fetching admin data:", err);

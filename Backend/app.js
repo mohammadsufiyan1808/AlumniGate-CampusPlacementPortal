@@ -3,25 +3,30 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
+// Error handling middleware
+import { notFoundHandler, errorHandler } from "./src/middlewares/errorHandler.js";
+
+// Student Routes
 import authRoutes from "./src/routes/auth.js";
 import companyRoutes from "./src/routes/companies.js";
 import applicationRoutes from "./src/routes/applications.js";
 import profileRoutes from "./src/routes/profile.js";
 import eligibilityRoutes from "./src/routes/eligibility.js";
 
-import adminStudentRoute from "./src/AdminRoutes/studentRoute.js";
-import adminCompanyRoute from "./src/AdminRoutes/companyRoute.js";
-import evaluateResultsRoute from "./src/AdminRoutes/evaluateResultsRoute.js";
-import adminLoginRoute from "./src/AdminRoutes/login.js";
-import adminDetails from "./src/AdminRoutes/adminDetails.js";
+// Admin Routes
+import adminLoginRoute from "./src/routes/admin/login.js";
+import adminStudentRoute from "./src/routes/admin/studentRoute.js";
+import adminCompanyRoute from "./src/routes/admin/companyRoute.js";
+import evaluateResultsRoute from "./src/routes/admin/evaluateResultsRoute.js";
 
 dotenv.config();
 const app = express();
+const port = process.env.PORT || 8080;
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // frontend URL
-    credentials: true, 
+    origin: "*", // frontend URL
+    credentials: true,
   })
 );
 
@@ -53,19 +58,16 @@ app.use("/api", applicationRoutes);
 app.use("/api", profileRoutes);
 app.use("/api", eligibilityRoutes);
 
-//admin routes
-app.use("/api/admin" , adminLoginRoute);
-app.use("/api/admin" , adminDetails);
-app.use("/api/admin" , evaluateResultsRoute);
-app.use("/api/admin/student" , adminStudentRoute);
+// Admin routes
+app.use("/api/admin", adminLoginRoute);
+app.use("/api/admin", evaluateResultsRoute);
+app.use("/api/admin/student", adminStudentRoute);
 app.use("/api/admin/company", adminCompanyRoute);
 
+// Error handling (must be after all routes)
+app.use(notFoundHandler);
+app.use(errorHandler);
 
-app.use((req, res) => {
-  res.status(404).sendFile(__dirname + '/404.html');
-});
-
-
-app.listen(8080, () => {
+app.listen(port, () => {
   console.log("port listening");
 });
